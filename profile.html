@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile & Budget — LSA Audit Tool</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="stylesheet" href="css/sidebar.css"/>
+  <link rel="stylesheet" href="css/profile.css"/>
+</head>
+<body>
+  <div id="spinner-overlay">
+    <svg class="spinner-svg" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="#DADCE0" stroke-width="3"/>
+      <path d="M12 2a10 10 0 0 1 10 10" stroke="#1A73E8" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <header class="app-header">
+    <div class="header-left">
+      <button class="icon-btn" id="sidebar-hamburger" aria-label="Toggle sidebar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <span class="header-title">Profile &amp; budget</span>
+    </div>
+    <div class="header-right">
+      <div class="icon-btn bell-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <span class="bell-badge"></span>
+      </div>
+      <div class="icon-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="5" cy="5" r="1.5"/><circle cx="12" cy="5" r="1.5"/><circle cx="19" cy="5" r="1.5"/>
+          <circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>
+          <circle cx="5" cy="19" r="1.5"/><circle cx="12" cy="19" r="1.5"/><circle cx="19" cy="19" r="1.5"/>
+        </svg>
+      </div>
+      <div class="avatar-circle">I</div>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <nav class="sidebar" id="sidebar"></nav>
+
+    <main class="main-content" id="main-content">
+      <!-- Sub-header -->
+      <div class="profile-subheader">
+        <div class="account-switcher" id="account-name-display" data-testid="profile-header-account-name">
+          Loading...
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="customer-id-label" id="customer-id-display" data-testid="profile-header-cid"></div>
+      </div>
+
+      <!-- Info banner -->
+      <div class="info-banner">
+        Editing your profile will update the information shown in your ad.
+        It may take several hours to see changes in Google Search results.
+      </div>
+
+      <div class="page-body">
+        <!-- Ad Status Card -->
+        <div class="card ad-status-card">
+          <div class="ad-status-toggle-area">
+            <div class="toggle-switch on" id="ad-toggle" data-testid="ad-status-toggle">
+              <div class="toggle-knob"></div>
+            </div>
+            <div class="ad-status-text">
+              <div class="toggle-state" id="toggle-label" data-testid="toggle-label">Your ad is on</div>
+              <div class="toggle-subtitle" id="toggle-subtitle" data-testid="toggle-subtitle">You will receive leads during the times you scheduled.</div>
+            </div>
+          </div>
+          <div class="ad-schedule-section" id="schedule-section">
+            <div class="schedule-label" data-testid="ad-schedule-label">AD SCHEDULE:</div>
+            <a class="schedule-value" href="#" data-testid="ad-schedule-value">ALL DAY</a>
+          </div>
+        </div>
+
+        <!-- Pause Banner -->
+        <div class="pause-banner" id="pause-banner" data-testid="pause-banner">
+          Your ad is paused. You will not receive leads at any time until you turn it on.
+        </div>
+
+        <!-- Business Profile Card -->
+        <div class="profile-card">
+          <div class="profile-card-header">
+            <span class="profile-biz-name" data-testid="business-name">Loading...</span>
+            <div class="verified-badge" data-testid="verified-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Verified
+            </div>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-field">
+              <div class="info-label">Home Postal Code</div>
+              <div class="info-value" id="postal-code-val"></div>
+              <div class="info-label" style="margin-top:10px">Address</div>
+              <div class="info-value" id="address-val"></div>
+            </div>
+            <div class="info-field">
+              <div class="info-label">Phone</div>
+              <div class="info-value" data-testid="phone"></div>
+            </div>
+            <div class="info-field">
+              <div class="info-label">Website</div>
+              <div class="info-value editable">
+                <span data-testid="website"></span>
+                <svg class="edit-icon" data-testid="website-edit-btn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </div>
+            </div>
+            <div class="info-field">
+              <div class="info-label">License</div>
+              <div class="info-value" data-testid="license"></div>
+            </div>
+          </div>
+
+          <div class="bio-section">
+            <div class="bio-row">
+              <div class="bio-content">
+                <div class="bio-label">Business bio</div>
+                <div class="bio-text" data-testid="business-bio"></div>
+              </div>
+              <svg class="edit-icon" data-testid="business-bio-edit-btn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;margin-top:16px">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom 2-col cards -->
+        <div class="bottom-cards">
+          <!-- Budget card -->
+          <div class="info-card" data-testid="budget-card">
+            <div class="info-card-header">
+              <span class="info-card-title">Budget and bidding</span>
+              <svg class="edit-icon" data-testid="budget-edit-btn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+            </div>
+            <div class="info-card-row">
+              <span class="row-label" data-testid="bidding-strategy-label">Bidding strategy</span>
+              <span class="row-value" data-testid="bidding-strategy-value"></span>
+            </div>
+            <div class="info-card-row">
+              <span class="row-label" data-testid="budget-label">Average weekly budget</span>
+              <span class="row-value" data-testid="budget-value"></span>
+            </div>
+            <div class="info-card-row">
+              <span class="row-label" data-testid="previous-7-days-label">Previous 7 days</span>
+              <span class="row-value" data-testid="previous-7-days-value"></span>
+            </div>
+          </div>
+
+          <!-- Job types card -->
+          <div class="info-card" data-testid="job-types-card">
+            <div class="info-card-header">
+              <span class="info-card-title">Job types</span>
+              <svg class="edit-icon" data-testid="job-types-edit-btn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+            </div>
+            <div id="job-types-list"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/spinner.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/data-loader.js"></script>
+  <script src="js/sidebar.js"></script>
+  <script src="js/profile.js"></script>
+  <script>
+    document.getElementById('sidebar-hamburger').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.toggle('collapsed');
+      document.getElementById('main-content').classList.toggle('sidebar-collapsed');
+    });
+  </script>
+</body>
+</html>

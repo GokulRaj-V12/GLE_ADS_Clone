@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Select Account — LSA Audit Tool</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <style>
+    body { background:var(--bg-page); min-height:100vh; display:flex; flex-direction:column; }
+    .picker-header {
+      background:var(--white); border-bottom:1px solid var(--border-color);
+      height:var(--header-height); display:flex; align-items:center; padding:0 20px; gap:14px;
+      box-shadow:var(--shadow);
+    }
+    .picker-header-title { font-size:18px; color:var(--dark-text); font-weight:400; }
+    .picker-body { flex:1; display:flex; align-items:center; justify-content:center; padding:40px 16px; }
+    .picker-card {
+      background:var(--white); border:1px solid var(--border-color);
+      border-radius:8px; width:100%; max-width:520px;
+      box-shadow: var(--shadow-md);
+    }
+    .picker-card-heading { padding:20px 24px 12px; font-size:16px; color:var(--dark-text); border-bottom:1px solid var(--border-color); }
+    .picker-list { list-style:none; }
+    .picker-item {
+      display:flex; align-items:center;
+      padding:14px 24px; border-bottom:1px solid var(--border-color);
+      cursor:pointer; transition:background 0.15s;
+    }
+    .picker-item:hover { background:var(--bg-hover); }
+    .picker-item.selected { background:var(--primary-blue); }
+    .picker-item.selected .picker-name,
+    .picker-item.selected .picker-label,
+    .picker-item.selected .picker-id { color:white !important; }
+    .picker-item-left { flex:1; }
+    .picker-name { font-size:14px; color:var(--primary-blue); font-weight:400; }
+    .picker-label { font-size:12px; color:var(--secondary-text); margin-top:2px; }
+    .picker-id { font-size:14px; color:var(--dark-text); }
+    .picker-footer { border-top:1px solid var(--border-color); }
+    .picker-action {
+      display:block; text-align:center; padding:14px;
+      font-size:14px; color:var(--primary-blue); cursor:pointer;
+      border-bottom:1px solid var(--border-color);
+    }
+    .picker-action:last-child { border-bottom:none; font-size:12px; }
+    .picker-action:hover { background:var(--bg-hover); text-decoration:none; }
+  </style>
+</head>
+<body>
+  <div id="spinner-overlay">
+    <svg class="spinner-svg" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="#DADCE0" stroke-width="3"/>
+      <path d="M12 2a10 10 0 0 1 10 10" stroke="#1A73E8" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="picker-header">
+    <button class="icon-btn" id="menu-btn" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <span class="picker-header-title">Select Account</span>
+  </div>
+
+  <div class="picker-body">
+    <div class="picker-card">
+      <div class="picker-card-heading">Use Local Services Ads as...</div>
+      <ul class="picker-list" id="mcc-list" data-testid="account-picker-list"></ul>
+      <div class="picker-footer">
+        <a class="picker-action" href="#">+ NEW LOCAL SERVICES ADS ACCOUNT</a>
+        <a class="picker-action" href="#" id="switch-account">SWITCH GOOGLE ACCOUNT</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/spinner.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/data-loader.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      requireAuth();
+      const data = await loadData();
+      const list = document.getElementById('mcc-list');
+      data.mccs.forEach(mcc => {
+        const li = document.createElement('li');
+        li.className = 'picker-item';
+        li.setAttribute('data-testid', 'account-picker-item');
+        li.setAttribute('data-mcid', mcc.mcid);
+        li.innerHTML = `
+          <div class="picker-item-left">
+            <div class="picker-name" data-testid="account-picker-link">${mcc.name}</div>
+            <div class="picker-label">(${mcc.label})</div>
+          </div>
+          <div class="picker-id">${mcc.phone || mcc.mcid}</div>
+        `;
+        li.addEventListener('click', () => {
+          document.querySelectorAll('.picker-item').forEach(i => i.classList.remove('selected'));
+          li.classList.add('selected');
+          setTimeout(() => { window.location.href = `dashboard.html?mcid=${mcc.mcid}`; }, 200);
+        });
+        list.appendChild(li);
+      });
+      document.getElementById('switch-account').addEventListener('click', (e) => { e.preventDefault(); logout(); });
+    });
+  </script>
+</body>
+</html>

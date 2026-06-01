@@ -1,0 +1,19 @@
+# Excel lock / temp files
+~$*.xlsx
+*.tmp
+
+# Backups (do not publish)
+*.backup.json
+*.backup2.json
+*.backup3.json
+*.backup.xlsx
+*.backup2.xlsx
+data_v2.backup*.json
+
+# Source doc — not needed for the Pages site
+Lsa_dilo.pdf
+*.pdf
+
+# OS noise
+.DS_Store
+Thumbs.db
